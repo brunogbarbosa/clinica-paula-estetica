@@ -177,6 +177,15 @@
 }
 .essence-smile img { object-fit: cover; object-position: 50% 18%; filter: saturate(.88) contrast(1.03); }
 
+/* Keep the chapter-01 portrait inside its visual column on desktop. */
+@media (min-width: 701px) {
+  .essence-smile {
+    width: 50%;
+    right: -4%;
+    top: 6px;
+  }
+}
+
 @media (max-width: 700px) {
   .essence-stage { height: calc(108vw + 500px); }
   .essence-editorial-description { width: 88%; max-width: 340px; }

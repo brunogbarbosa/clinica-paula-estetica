@@ -59,7 +59,6 @@ export function ExperienceStatement() {
       <Image src={site.images.beauty} alt="Dra. Laís Paula em um registro editorial com material de estética" fill sizes="(max-width: 700px) 94vw, (max-width: 1100px) 50vw, 45vw" />
       <span className={styles.photoWash} aria-hidden="true" />
       <svg className={styles.photoArc} viewBox="0 0 720 740" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M 735 -18 C 526 49 414 177 371 359 C 345 470 349 594 371 758" pathLength="1" vectorEffect="non-scaling-stroke" data-experience-motion="line" /></svg>
-      <p className={styles.photoCopy} data-experience-motion="photo-copy">BELEZA<br />QUE RESPEITA<br />O SEU MELHOR.<span aria-hidden="true" /></p>
       <ImageSeal id={uid} />
     </figure>
     <blockquote className={styles.quote} data-experience-motion="quote"><span className={styles.quoteMark} aria-hidden="true">&quot;</span><div><p>Mais do que estética,<br />é sobre se reconhecer.</p><footer><span aria-hidden="true" /><cite>LAÍS PAULA</cite></footer></div></blockquote>
