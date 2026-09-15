@@ -27,24 +27,61 @@ export function Chapters() {
 
 function ResultGallery() {
   const [active, setActive] = useState<number | null>(null);
-  const [compare, setCompare] = useState(false);
-  const [value, setValue] = useState(50);
+  const [imageStatus, setImageStatus] = useState<'loading' | 'loaded' | 'error'>('loading');
   const dialog = useRef<HTMLDialogElement>(null);
   const opener = useRef<HTMLButtonElement | null>(null);
   const items = site.results.items;
   const item = active === null ? null : items[active];
+  const isOpen = active !== null;
 
   useEffect(() => {
-    if (active !== null) { if (!dialog.current?.open) dialog.current?.showModal(); document.body.style.overflow = 'hidden'; }
-    else { dialog.current?.close(); document.body.style.overflow = ''; }
-    return () => { document.body.style.overflow = ''; };
-  }, [active]);
+    if (!isOpen) return;
+    const modal = dialog.current;
+    const previousOverflow = document.body.style.overflow;
+    if (!modal?.open) modal?.showModal();
+    document.body.style.overflow = 'hidden';
+    return () => { modal?.close(); document.body.style.overflow = previousOverflow; };
+  }, [isOpen]);
 
-  const close = () => { setActive(null); opener.current?.focus(); };
-  const move = (delta: number) => { setActive(current => current === null ? 0 : (current + delta + items.length) % items.length); setValue(50); setCompare(false); };
+  const close = () => {
+    dialog.current?.close();
+    setActive(null);
+    opener.current?.focus({ preventScroll: true });
+  };
+  const move = (delta: number) => {
+    setImageStatus('loading');
+    setActive(current => current === null ? 0 : (current + delta + items.length) % items.length);
+  };
 
-  return <section id="resultados" className="gallery-chapter"><div className="gallery-top"><Tag>O cuidado, em imagens</Tag><span>{String(items.length).padStart(2, '0')} REGISTROS REAIS</span></div><div className="gallery-heading" data-reveal><h2>Beleza real.<br /><em>Identidade singular.</em></h2><p>Registros compartilhados pela clínica. Explore os antes e depois com respeito à individualidade de cada pessoa.</p></div><div className="gallery-grid">{items.map((result, i) => <figure className={`gallery-item gallery-item-${i}`} key={result.image} data-reveal><button onClick={event => { opener.current = event.currentTarget; setCompare(false); setValue(50); setActive(i); }} aria-label={`Ampliar resultado ${pad(i)}: ${result.label}`}><div className="gallery-photo"><Image src={result.image} alt={result.alt} fill sizes="(max-width:700px) 88vw, (max-width:1000px) 45vw, 42vw" /></div><span className="gallery-open"><ArrowUpRight size={23} /></span></button><figcaption><span><small>{pad(i)} /</small> {result.label}</span><span>{result.orientation === 'single' ? 'REGISTRO' : 'ANTES & DEPOIS'}</span></figcaption></figure>)}</div><div className="gallery-end"><p>Fotografias compartilhadas pela Dra. {site.name}.<br />Resultados individuais. Cada pessoa tem características próprias.</p><ContactLink>O seu primeiro passo</ContactLink></div>
-    <dialog ref={dialog} className="result-dialog" aria-labelledby="viewer-title" onCancel={close} onClose={() => setActive(null)} onKeyDown={event => { if ((event.target as HTMLElement).tagName === 'INPUT') return; if (event.key === 'ArrowRight') { event.preventDefault(); move(1); } if (event.key === 'ArrowLeft') { event.preventDefault(); move(-1); } }}>{item && <><div className="viewer-top"><div><Tag>Um olhar mais próximo</Tag><h3 id="viewer-title">{item.label}</h3></div><button className="viewer-icon" onClick={close} aria-label="Fechar resultado"><X /></button></div><div className="viewer-stage">{compare && item.orientation !== 'single' ? <div className={`comparison ${item.orientation === 'vertical' ? 'vertical' : ''}`} style={{ aspectRatio: item.comparisonRatio }}><div className="compare-half after" style={{ backgroundImage: `url(${item.image})`, backgroundSize: `100% ${100 / (1 - item.beforeShare)}%` }} /><div className="compare-half before" style={{ backgroundImage: `url(${item.image})`, backgroundSize: `100% ${100 / item.beforeShare}%`, clipPath: `inset(0 ${100 - value}% 0 0)` }} /><div className="comparison-line" style={{ left: `${value}%` }}><span>↔</span></div><span className="compare-label left">Antes</span><span className="compare-label right">Depois</span></div> : <Image src={item.image} alt={item.alt} fill sizes="90vw" />}</div>{compare && <label className="viewer-range">Deslize para comparar<input type="range" min="0" max="100" value={value} onChange={event => setValue(+event.target.value)} aria-label="Proporção entre antes e depois" /></label>}<div className="viewer-bottom"><button className="viewer-icon" aria-label="Resultado anterior" onClick={() => move(-1)}><ArrowLeft /></button><span aria-live="polite">{pad(active!)} / {String(items.length).padStart(2, '0')}</span>{item.orientation !== 'single' && <button className="viewer-mode" aria-pressed={compare} onClick={() => { setCompare(!compare); setValue(50); }}>{compare ? 'Ver foto original' : 'Comparar antes e depois'}</button>}<button className="viewer-icon" aria-label="Próximo resultado" onClick={() => move(1)}><ArrowRight /></button></div>{compare && <p className="viewer-note">Recortes do registro original. Enquadramentos podem variar.</p>}</>}</dialog>
+  return <section id="resultados" className="gallery-chapter" aria-labelledby="gallery-title">
+    <div className="gallery-top"><Tag>03 / O cuidado, em imagens</Tag><span>{String(items.length).padStart(2, '0')} REGISTROS REAIS</span></div>
+    <div className="gallery-heading" data-reveal>
+      <h2 id="gallery-title">Beleza real.<br /><em>Identidade singular.</em></h2>
+      <p>Registros compartilhados pela clínica. Explore os antes e depois com respeito à individualidade de cada pessoa.</p>
+    </div>
+    <div className="gallery-grid">{items.map((result, i) =>
+      <figure className="gallery-item" key={result.image} data-reveal>
+        <button type="button" onClick={event => { opener.current = event.currentTarget; setImageStatus('loading'); setActive(i); }} aria-haspopup="dialog" aria-label={`Ampliar resultado ${pad(i)}: ${result.label}`}>
+          <div className="gallery-photo"><Image src={result.image} alt={result.alt} width={result.width} height={result.height} sizes="(max-width:700px) 88vw, (max-width:1450px) 42vw, 600px" /></div>
+          <span className="gallery-open" aria-hidden="true"><ArrowUpRight size={23} /></span>
+        </button>
+        <figcaption><span><small>{pad(i)} /</small> {result.label}</span><span>REGISTRO ORIGINAL</span></figcaption>
+      </figure>
+    )}</div>
+    <div className="gallery-end"><p>Fotografias compartilhadas pela Dra. {site.name}.<br />Resultados individuais. Cada pessoa tem características próprias.</p><ContactLink>O seu primeiro passo</ContactLink></div>
+    <dialog ref={dialog} className="result-dialog" aria-labelledby="viewer-title" onCancel={event => { event.preventDefault(); close(); }} onClose={() => setActive(null)} onKeyDown={event => {
+      if (event.key === 'ArrowRight') { event.preventDefault(); move(1); }
+      if (event.key === 'ArrowLeft') { event.preventDefault(); move(-1); }
+    }}>
+      {item && <>
+        <div className="viewer-top"><div><Tag>Um olhar mais próximo</Tag><h3 id="viewer-title">{item.label}</h3></div><button type="button" className="viewer-icon" onClick={close} aria-label="Fechar resultado" autoFocus><X /></button></div>
+        <div className="viewer-stage" aria-busy={imageStatus === 'loading'}>
+          {imageStatus !== 'loaded' && <p className="viewer-loading" role="status">{imageStatus === 'error' ? 'Não foi possível carregar a imagem. Tente outro registro.' : 'Carregando registro…'}</p>}
+          <Image key={item.image} src={item.image} alt={item.alt} fill loading="eager" sizes="(max-width:700px) 90vw, 900px" onLoad={() => setImageStatus('loaded')} onError={() => setImageStatus('error')} />
+        </div>
+        <div className="viewer-bottom"><button type="button" className="viewer-icon" aria-label="Resultado anterior" onClick={() => move(-1)}><ArrowLeft /></button><span aria-live="polite">{pad(active!)} / {String(items.length).padStart(2, '0')}</span><button type="button" className="viewer-icon" aria-label="Próximo resultado" onClick={() => move(1)}><ArrowRight /></button></div>
+      </>}
+    </dialog>
   </section>;
 }
 

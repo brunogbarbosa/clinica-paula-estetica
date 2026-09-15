@@ -33,7 +33,7 @@ export const site = {
   },
 
   images: {
-    hero: '/images/lais-hero.png',
+    hero: '/images/lais-hero-cutout.png',
     about: '/images/lais-about.png',
     beauty: '/images/lais-beauty.png',
     event: '/images/lais-evento.png',
@@ -52,11 +52,11 @@ export const site = {
   results: {
     enabled: true,
     items: [
-      { image: '/images/resultado-sobrancelhas.png', label: 'Olhar mais expressivo', alt: 'Registro de antes e depois de harmonização facial na região das sobrancelhas, fornecido pela Clínica Paula Estética', orientation: 'single', beforeShare: 0.5, comparisonRatio: 1.97 },
-      { image: '/images/resultado-labios.png', label: 'Lábios com naturalidade', alt: 'Registro de antes e depois de tratamento labial, fornecido pela Clínica Paula Estética', orientation: 'single', beforeShare: 0.5, comparisonRatio: 1.01 },
-      { image: '/images/resultado-nariz.png', label: 'Perfil em equilíbrio', alt: 'Registro de antes e depois de rinomodelação, fornecido pela Clínica Paula Estética', orientation: 'single', beforeShare: 0.5, comparisonRatio: 0.97 },
-      { image: '/images/resultado-contorno.png', label: 'Harmonia no contorno', alt: 'Registro de antes e depois de harmonização facial, fornecido pela Clínica Paula Estética', orientation: 'single', beforeShare: 0.5, comparisonRatio: 1.01 },
-      { image: '/images/resultado-perfil.png', label: 'Leveza no perfil', alt: 'Registro de antes e depois de harmonização facial, fornecido pela Clínica Paula Estética', orientation: 'single', beforeShare: 0.5, comparisonRatio: 1.01 },
+      { image: '/images/resultado-sobrancelhas.png', label: 'Olhar mais expressivo', alt: 'Registro de antes e depois de harmonização facial na região das sobrancelhas, fornecido pela Clínica Paula Estética', width: 1284, height: 1236 },
+      { image: '/images/resultado-labios.png', label: 'Lábios com naturalidade', alt: 'Registro de antes e depois de tratamento labial, fornecido pela Clínica Paula Estética', width: 1284, height: 1238 },
+      { image: '/images/resultado-nariz.png', label: 'Perfil em equilíbrio', alt: 'Registro de antes e depois de rinomodelação, fornecido pela Clínica Paula Estética', width: 1264, height: 1295 },
+      { image: '/images/resultado-contorno.png', label: 'Harmonia no contorno', alt: 'Registro de antes e depois de harmonização facial, fornecido pela Clínica Paula Estética', width: 1284, height: 1249 },
+      { image: '/images/resultado-perfil.png', label: 'Leveza no perfil', alt: 'Registro de antes e depois de harmonização facial, fornecido pela Clínica Paula Estética', width: 1284, height: 1218 },
     ],
   },
 

@@ -26,21 +26,30 @@ function Header() {
   }, []);
 
   useEffect(() => {
-    if (open) { dialog.current?.showModal(); document.body.style.overflow = 'hidden'; }
-    else { dialog.current?.close(); document.body.style.overflow = ''; }
-    return () => { document.body.style.overflow = ''; };
+    if (!open) return;
+    const modal = dialog.current;
+    const previousOverflow = document.body.style.overflow;
+    if (!modal?.open) modal?.showModal();
+    document.body.style.overflow = 'hidden';
+    const onResize = () => { if (window.innerWidth > 900) setOpen(false); };
+    window.addEventListener('resize', onResize);
+    return () => {
+      modal?.close();
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('resize', onResize);
+    };
   }, [open]);
 
-  const close = () => { setOpen(false); trigger.current?.focus(); };
+  const close = () => { dialog.current?.close(); setOpen(false); trigger.current?.focus({ preventScroll: true }); };
 
   return <>
     <header className={scrolled ? 'header scrolled' : 'header'}>
       <a className="wordmark" href="#inicio" aria-label={`${site.name}, início`}><span className="brand-monogram" aria-hidden="true">lp.</span><span className="brand-type">CLÍNICA PAULA<small>ESTÉTICA FACIAL</small></span></a>
       <nav className="desktop-nav" aria-label="Navegação principal"><a href="#sobre">A doutora</a><a href="#experiencia">A experiência</a>{site.results.enabled && <a href="#resultados">Resultados</a>}</nav>
       <Appointment className="header-cta" />
-      <button className="mobile-menu icon-button" ref={trigger} aria-label="Abrir menu" aria-expanded={open} onClick={() => setOpen(true)}><Menu /></button>
+      <button className="mobile-menu icon-button" ref={trigger} aria-label="Abrir menu" aria-controls="mobile-navigation" aria-expanded={open} onClick={() => setOpen(true)}><Menu /></button>
     </header>
-    <dialog ref={dialog} className="menu-dialog" onCancel={close} onClose={() => setOpen(false)}>
+    <dialog ref={dialog} id="mobile-navigation" className="menu-dialog" aria-label="Menu de navegação" onCancel={event => { event.preventDefault(); close(); }} onClose={() => setOpen(false)}>
       <button className="menu-close icon-button" aria-label="Fechar menu" onClick={close}><X /></button>
       <Label>{site.name}</Label>
       <nav aria-label="Navegação mobile">{[['A doutora', 'sobre'], ['A experiência', 'experiencia'], ['Resultados', 'resultados'], ['Vamos conversar', 'contato']].filter(([, id]) => id !== 'resultados' || site.results.enabled).map(([name, id]) => <a key={id} href={`#${id}`} onClick={close}>{name}<ArrowUpRight /></a>)}</nav>
