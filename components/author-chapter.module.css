@@ -764,3 +764,9 @@
 .photo { background: #dfd4c5; }
 .cardCopy, .closingNote { color: #66594e; }
 .sideNote b { background: radial-gradient(circle at 32% 26%, #fff9ee 0 10%, #d6b47a 42%, #9a7045 100%); }
+
+/* The portrait is intentionally framed wide on desktop; anchor the crop at the forehead instead of the torso. */
+.photo img { object-position: 50% 10%; }
+@media (max-width: 700px) {
+  .photo img { object-position: 50% 8%; }
+}

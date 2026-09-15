@@ -155,3 +155,46 @@
 .essence-editorial-description { color: #66594e; }
 .essence-smile img { object-fit: cover; object-position: 66% 40%; filter: saturate(.88) contrast(1.04); }
 .essence-values { background: #f6f2eb; }
+
+/* Chapter 01 uses its own editorial image; keep the face visible and give it the same arch language as the reference. */
+.essence-smile {
+  overflow: hidden;
+  mask: none;
+  -webkit-mask: none;
+  border-radius: 50% 50% 0 0 / 16% 16% 0 0;
+  background: #dfc9a8;
+  box-shadow: 0 24px 58px rgb(63 39 23 / .12);
+}
+.essence-smile::after {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  inset: 12px 12px 0;
+  border: 1px solid rgb(214 180 122 / .68);
+  border-bottom: 0;
+  border-radius: 50% 50% 0 0 / 16% 16% 0 0;
+  pointer-events: none;
+}
+.essence-smile img { object-fit: cover; object-position: 50% 18%; filter: saturate(.88) contrast(1.03); }
+
+@media (max-width: 700px) {
+  .essence-stage { height: calc(108vw + 500px); }
+  .essence-editorial-description { width: 88%; max-width: 340px; }
+  .essence-editorial-cta { max-width: 70%; }
+  .essence-smile {
+    width: 108%;
+    right: -4%;
+    top: 480px;
+    aspect-ratio: .82;
+    border-radius: 50% 50% 0 0 / 18% 18% 0 0;
+  }
+  .essence-smile::after {
+    inset: 10px 10px 0;
+    border-radius: 50% 50% 0 0 / 18% 18% 0 0;
+  }
+  .essence-smile img { object-position: 50% 16%; }
+}
+
+@media (max-width: 374px) {
+  .essence-smile { top: 460px; }
+}

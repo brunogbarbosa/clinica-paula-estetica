@@ -692,3 +692,59 @@
 .campaign-cta, .header .header-cta { background: var(--wine); border-color: var(--wine); }
 .campaign-cta:hover, .header .header-cta:hover { background: #8c6231; }
 .campaign-cta::before { background: #8c6231; }
+
+/* Editorial portrait framing: the image should read as a soft arch, not a square card. */
+.campaign-silhouette {
+  border-radius: 50% 50% 0 0 / 16% 16% 0 0;
+  background: #e5d4ba;
+  box-shadow: 0 24px 58px rgb(63 39 23 / .14);
+}
+.campaign-silhouette::before {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  inset: 12px 12px 0;
+  border: 1px solid rgb(214 180 122 / .62);
+  border-bottom: 0;
+  border-radius: 50% 50% 0 0 / 16% 16% 0 0;
+  pointer-events: none;
+}
+.campaign-original { object-position: 50% 18%; }
+
+@media (max-width: 700px) {
+  .campaign-inner { height: calc(108vw + 560px); }
+  .campaign-portrait {
+    width: 108%;
+    right: -4%;
+    top: 520px;
+    aspect-ratio: .82;
+  }
+  .campaign-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+    margin-top: 34px;
+    gap: 0;
+  }
+  .campaign-metric,
+  .campaign-metric:first-child {
+    padding: 0 10px !important;
+    gap: 5px;
+    text-align: left;
+    border-left: 1px solid var(--line);
+  }
+  .campaign-metric:first-child { padding-left: 0 !important; border-left: 0; }
+  .campaign-metric strong { font-size: 25px; }
+  .campaign-metric > span { align-self: start; max-width: 100px; font-size: 8px; line-height: 1.5; }
+  .campaign-silhouette { border-radius: 50% 50% 0 0 / 18% 18% 0 0; }
+  .campaign-silhouette::before {
+    inset: 10px 10px 0;
+    border-radius: 50% 50% 0 0 / 18% 18% 0 0;
+  }
+  .campaign-original { object-position: 50% 19%; }
+}
+
+@media (max-width: 374px) {
+  .campaign-inner { height: calc(110vw + 540px); }
+  .campaign-portrait { top: 500px; }
+}

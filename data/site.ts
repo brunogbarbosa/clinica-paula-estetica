@@ -36,6 +36,7 @@ export const site = {
     hero: '/images/lais-hero.png',
     about: '/images/lais-about.png',
     beauty: '/images/lais-beauty.png',
+    event: '/images/lais-evento.png',
   },
 
   procedures: [

@@ -67,7 +67,7 @@ export function EssenceChapter() {
         <circle cx="82" cy="669" r="5.5" fill={`url(#${uid}-pearl-mobile)`} data-essence-motion="bead" data-delay="600" />
       </svg>
       <figure className="essence-smile" data-essence-motion="photo">
-        <Image src={site.images.about} alt="Dra. Laís Paula em um registro editorial da clínica" fill sizes="(max-width:700px) 180vw, (max-width:1100px) 82vw, 67vw" />
+        <Image src={site.images.event} alt="Dra. Laís Paula em um registro editorial de sua presença e estilo" fill sizes="(max-width:700px) 108vw, (max-width:1100px) 82vw, 67vw" />
       </figure>
       <div className="essence-editorial-top">
         <p>01 / A ESSÊNCIA</p><span aria-hidden="true" /><p>A BELEZA COMEÇA<br />NO QUE É SEU.</p>
